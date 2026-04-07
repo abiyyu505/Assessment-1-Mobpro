@@ -3,10 +3,14 @@ package com.abiyyu0003.asssessment1.ui.screen
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -25,6 +29,8 @@ fun MainScreen(innerPadding: PaddingValues) {
 @Composable
 fun ScreenContent( innerPadding: PaddingValues ) {
     var tinggi by remember { mutableStateOf("") }
+    var gender by remember { mutableStateOf("Pria") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -40,5 +46,21 @@ fun ScreenContent( innerPadding: PaddingValues ) {
             onValueChange = { tinggi = it },
             label = { Text("Tinggi Badan (cm)") }
         )
+
+        Row {
+            RadioButton(
+                selected = gender == "Pria",
+                onClick = { gender = "Pria" }
+            )
+            Text("Pria")
+
+            Spacer(modifier = Modifier.width(16.dp))
+
+            RadioButton(
+                selected = gender == "Wanita",
+                onClick = { gender = "Wanita" }
+            )
+            Text("Wanita")
+        }
     }
 }
