@@ -1,26 +1,11 @@
 package com.abiyyu0003.asssessment1.ui.screen
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
@@ -41,44 +26,58 @@ fun ScreenContent(innerPadding: PaddingValues) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
             .padding(innerPadding)
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Top
+            .padding(16.dp)
     ) {
-        Text(
-            text = "Cek Berat Ideal",
+
+        Text("Masukkan data diri kamu untuk mengetahui berat badan ideal kamu")
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Card(
             modifier = Modifier.fillMaxWidth()
-        )
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
 
+                TextField(
+                    value = tinggi,
+                    onValueChange = { tinggi = it },
+                    label = { Text("Tinggi Badan (cm)") },
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-        TextField(
-            value = tinggi,
-            onValueChange = { tinggi = it },
-            label = { Text("Tinggi Badan (cm)") }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(12.dp))
 
-        TextField(
-            value = umur,
-            onValueChange = {umur = it },
-            label = { Text("Umur (tahun)") },
-            modifier = Modifier.fillMaxWidth()
-        )
+                TextField(
+                    value = umur,
+                    onValueChange = { umur = it },
+                    label = { Text("Umur (tahun)") },
+                    modifier = Modifier.fillMaxWidth()
+                )
 
-        Row {
-            RadioButton(
-                selected = gender == "Pria",
-                onClick = { gender = "Pria" }
-            )
-            Text("Pria")
+                Spacer(modifier = Modifier.height(12.dp))
 
-            Spacer(modifier = Modifier.width(16.dp))
+                Text("Jenis Kelamin")
 
-            RadioButton(
-                selected = gender == "Wanita",
-                onClick = { gender = "Wanita" }
-            )
-            Text("Wanita")
+                Row(verticalAlignment = Alignment.CenterVertically) {
+
+                    RadioButton(
+                        selected = gender == "Pria",
+                        onClick = { gender = "Pria" }
+                    )
+                    Text("Pria")
+
+                    Spacer(modifier = Modifier.width(16.dp))
+
+                    RadioButton(
+                        selected = gender == "Wanita",
+                        onClick = { gender = "Wanita" }
+                    )
+                    Text("Wanita")
+                }
+            }
         }
+
+        Spacer(modifier = Modifier.height(20.dp))
 
         Button(
             onClick = {
@@ -88,30 +87,55 @@ fun ScreenContent(innerPadding: PaddingValues) {
                     val t = tinggi.toFloat()
                     val u = umur.toInt()
                     val ideal = hitungBeratIdeal(t, gender, u)
-                    hasil = "Berat ideal: $ideal kg"
+                    hasil = "Berat ideal: %.1f kg".format(ideal)
                 }
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Hitung")
+            Text("Hitung Sekarang")
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
-            Text(hasil)
+        Spacer(modifier = Modifier.height(20.dp))
+
+        if (hasil.isNotEmpty()) {
+            Card(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text("Hasil Perhitungan")
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text(hasil)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        Card(
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("Tips Kesehatan")
+                Spacer(modifier = Modifier.height(8.dp))
+                Text("• Minum air cukup\n• Olahraga rutin\n• Jaga pola makan\n• Istirahat cukup")
+            }
         }
     }
-    fun hitungBeratIdeal(tinggi: Float, gender: String, umur: Int): Float {
-        var hasil = if (gender == "Pria") {
-            (tinggi - 100) - (0.1f * (tinggi - 100))
-        } else {
-            (tinggi - 100) - (0.15f * (tinggi - 100))
-        }
+}
 
-        if (umur < 18) {
-            hasil -= 2f
-        } else if (umur > 40) {
-            hasil -= 1.5f
-        }
-
-        return hasil
+// ✅ HARUS DI LUAR COMPOSABLE
+fun hitungBeratIdeal(tinggi: Float, gender: String, umur: Int): Float {
+    var hasil = if (gender == "Pria") {
+        (tinggi - 100) - (0.1f * (tinggi - 100))
+    } else {
+        (tinggi - 100) - (0.15f * (tinggi - 100))
     }
+
+    if (umur < 18) {
+        hasil -= 2f
+    } else if (umur > 40) {
+        hasil -= 1.5f
+    }
+
+    return hasil
+}

@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
             Asssessment1Theme {
                 Scaffold(
                     topBar = {
-                        androidx.compose.material3.CenterAlignedTopAppBar(
+                        TopAppBar(
                             title = { Text("Cek Berat Ideal") }
                         )
                     }
