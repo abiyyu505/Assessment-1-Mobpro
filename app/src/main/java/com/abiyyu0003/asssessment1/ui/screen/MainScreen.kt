@@ -44,7 +44,11 @@ fun ScreenContent(innerPadding: PaddingValues) {
             .padding(16.dp),
         verticalArrangement = Arrangement.Top
     ) {
-        Text("Halaman Utama")
+        Text(
+            text = "Cek Berat Ideal",
+            modifier = Modifier.fillMaxWidth()
+        )
+
 
         TextField(
             value = tinggi,
@@ -106,7 +110,7 @@ fun ScreenContent(innerPadding: PaddingValues) {
         if (umur < 18) {
             hasil -= 2f
         } else if (umur > 40) {
-            hasil =- 1.5f
+            hasil -= 1.5f
         }
 
         return hasil
