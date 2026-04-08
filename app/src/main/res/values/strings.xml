@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">Asssessment1</string>
+    <string name="app_name">Cek Berat Ideal</string>
+    <string name="title_main">Cek Berat Ideal</string>
+    <string name="desc_main">Masukkan data diri kamu untuk mengetahui berat badan ideal kamu</string>
+    <string name="tinggi">Tinggi Badan (cm)</string>
+    <string name="umur">Umur (tahun)</string>
+    <string name="gender">Jenis Kelamin</string>
+    <string name="pria">Pria</string>
+    <string name="wanita">Wanita</string>
+    <string name="hitung">Hitung Sekarang</string>
+    <string name="hasil">Hasil Perhitungan</string>
+    <string name="error_kosong">Input tidak boleh kosong!</string>
+    <string name="title_about">Tentang Aplikasi</string>
+    <string name="about_text">Aplikasi ini digunakan untuk menghitung berat badan ideal berdasarkan tinggi badan, umur, dan jenis kelamin.</string>
+    <string name="menu_info">Info</string>
 </resources>

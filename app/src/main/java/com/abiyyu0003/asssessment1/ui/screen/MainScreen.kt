@@ -3,15 +3,40 @@ package com.abiyyu0003.asssessment1.ui.screen
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import com.abiyyu0003.asssessment1.R
+import com.abiyyu0003.asssessment1.navigation.Screen
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainScreen(innerPadding: PaddingValues) {
-    ScreenContent(innerPadding)
+fun MainScreen(navController: NavHostController) {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(stringResource(R.string.title_main)) },
+                actions = {
+                    IconButton(onClick = {
+                        navController.navigate(Screen.About.route)
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = stringResource(R.string.menu_info)
+                        )
+                    }
+                }
+            )
+        }
+    ) { innerPadding ->
+        ScreenContent(innerPadding)
+    }
 }
 
 @Composable
@@ -29,19 +54,17 @@ fun ScreenContent(innerPadding: PaddingValues) {
             .padding(16.dp)
     ) {
 
-        Text("Masukkan data diri kamu untuk mengetahui berat badan ideal kamu")
+        Text(stringResource(R.string.desc_main))
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        Card(
-            modifier = Modifier.fillMaxWidth()
-        ) {
+        Card(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.padding(16.dp)) {
 
                 TextField(
                     value = tinggi,
                     onValueChange = { tinggi = it },
-                    label = { Text("Tinggi Badan (cm)") },
+                    label = { Text(stringResource(R.string.tinggi)) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -50,13 +73,13 @@ fun ScreenContent(innerPadding: PaddingValues) {
                 TextField(
                     value = umur,
                     onValueChange = { umur = it },
-                    label = { Text("Umur (tahun)") },
+                    label = { Text(stringResource(R.string.umur)) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                Text("Jenis Kelamin")
+                Text(stringResource(R.string.gender))
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
 
@@ -64,7 +87,7 @@ fun ScreenContent(innerPadding: PaddingValues) {
                         selected = gender == "Pria",
                         onClick = { gender = "Pria" }
                     )
-                    Text("Pria")
+                    Text(stringResource(R.string.pria))
 
                     Spacer(modifier = Modifier.width(16.dp))
 
@@ -72,17 +95,18 @@ fun ScreenContent(innerPadding: PaddingValues) {
                         selected = gender == "Wanita",
                         onClick = { gender = "Wanita" }
                     )
-                    Text("Wanita")
+                    Text(stringResource(R.string.wanita))
                 }
             }
         }
+        val errorKosong = stringResource(R.string.error_kosong)
 
         Spacer(modifier = Modifier.height(20.dp))
 
         Button(
             onClick = {
                 if (tinggi.isEmpty() || umur.isEmpty()) {
-                    hasil = "Input tidak boleh kosong!"
+                    hasil = errorKosong
                 } else {
                     val t = tinggi.toFloat()
                     val u = umur.toInt()
@@ -92,38 +116,23 @@ fun ScreenContent(innerPadding: PaddingValues) {
             },
             modifier = Modifier.fillMaxWidth()
         ) {
-            Text("Hitung Sekarang")
+            Text(stringResource(R.string.hitung))
         }
 
         Spacer(modifier = Modifier.height(20.dp))
 
         if (hasil.isNotEmpty()) {
-            Card(
-                modifier = Modifier.fillMaxWidth()
-            ) {
+            Card(modifier = Modifier.fillMaxWidth()) {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Hasil Perhitungan")
+                    Text(stringResource(R.string.hasil))
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(hasil)
                 }
             }
         }
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        Card(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Column(modifier = Modifier.padding(16.dp)) {
-                Text("Tips Kesehatan")
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("• Minum air cukup\n• Olahraga rutin\n• Jaga pola makan\n• Istirahat cukup")
-            }
-        }
     }
 }
 
-// ✅ HARUS DI LUAR COMPOSABLE
 fun hitungBeratIdeal(tinggi: Float, gender: String, umur: Int): Float {
     var hasil = if (gender == "Pria") {
         (tinggi - 100) - (0.1f * (tinggi - 100))
